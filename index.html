@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,44 +26,25 @@
             justify-content: center;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1100px;
-        }
-
+        .container { width: 100%; max-width: 1100px; }
         h1, h2, h3 { color: var(--primary); margin-top: 0; }
         
-        /* --- Inputs & Buttons --- */
         input[type="text"], input[type="number"], select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            box-sizing: border-box;
-            font-size: 1rem;
+            width: 100%; padding: 0.5rem; border: 1px solid var(--border-color);
+            border-radius: 0.5rem; background-color: var(--bg-color); color: var(--text-color);
+            margin-bottom: 1rem; box-sizing: border-box; font-size: 1rem;
         }
 
         button {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 0.5rem;
+            width: 100%; background-color: var(--primary); color: white; border: none;
+            padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer;
+            transition: background-color 0.2s; margin-top: 0.5rem;
         }
 
         button:hover { background-color: var(--primary-hover); }
         button.secondary { background-color: transparent; color: var(--text-color); border: 1px solid var(--border-color); }
         button.secondary:hover { background-color: #e6e6e6; border-color: #adadad; color: var(--text-color); }
 
-        /* --- Tabs --- */
         .tabs { display: flex; gap: 20px; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
         .tab-btn {
             background: none; border: none; padding: 10px 0; color: #6c757d; 
@@ -74,27 +56,17 @@
         .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
 
-        /* --- Metrics --- */
         .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
         .metric-card {
-            background: var(--card-bg);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--primary);
-            text-align: center;
+            background: var(--card-bg); padding: 1rem; border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); text-align: center;
         }
         .metric-label { font-size: 0.9rem; color: #666; margin-bottom: 0.2rem; }
         .metric-value { font-size: 1.5rem; font-weight: bold; color: var(--text-color); }
 
-        /* --- Cards & Tables --- */
         .card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 1rem;
-            border-left: 5px solid var(--primary);
+            background: var(--card-bg); padding: 1.5rem; border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 1rem; border-left: 5px solid var(--primary);
         }
         .card-title { font-size: 1.2em; font-weight: bold; color: #333; margin-bottom: 10px; }
         .card-content { font-size: 1em; color: #555; line-height: 1.6; }
@@ -104,7 +76,6 @@
         th { color: #888; font-weight: normal; }
         tr:nth-child(even) { background-color: #f9f9f9; }
 
-        /* --- Utilities --- */
         .hidden { display: none; }
         .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .toast {
@@ -113,11 +84,7 @@
             transform: translateX(-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        
         .switch { display: flex; align-items: center; gap: 10px; cursor: pointer; margin-bottom: 1rem; }
-        .switch input { margin: 0; width: auto; }
-
-        /* Cheatsheet grid */
         .cheatsheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -145,6 +112,9 @@
                 <input type="text" id="p4-name" value="Dana" placeholder="Player 4">
             </div>
             <button onclick="startGame()">Start Game</button>
+            <div style="margin-top: 10px; text-align: center; font-size: 0.8rem; color: #888;">
+                <a href="#" onclick="clearData()" style="color:#888;">Clear saved data</a>
+            </div>
         </div>
     </div>
 
@@ -155,42 +125,33 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('tab1')">📊 Scoreboard & New Game</button>
+            <button class="tab-btn active" onclick="switchTab('tab1')">📊 Scoreboard</button>
             <button class="tab-btn" onclick="switchTab('tab2')">📈 Analytics & History</button>
             <button class="tab-btn" onclick="switchTab('tab3')">🧠 Cheatsheet</button>
         </div>
 
         <div id="tab1" class="tab-content active">
             <h3>Current Standings</h3>
-            <div class="metric-grid" id="metrics-container">
-                </div>
-
+            <div class="metric-grid" id="metrics-container"></div>
             <hr style="border:0; border-top: 1px solid #ddd; margin: 2rem 0;">
-
             <h3>Add New Game Result</h3>
             <div class="card">
                 <label class="switch">
                     <input type="checkbox" id="is-solo" onchange="toggleGameType()">
                     <strong>Solo Game?</strong>
                 </label>
-
                 <div id="solo-select-div" class="hidden">
                     <label><strong>Select the solo player</strong></label>
                     <select id="solo-player" style="margin-top: 5px;"></select>
                 </div>
-
                 <div id="normal-select-div">
                     <label><strong>Select 'Re' party (winners)</strong></label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px;" id="winner-checkboxes">
-                        </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px;" id="winner-checkboxes"></div>
                 </div>
-
                 <label style="margin-top: 1rem; display: block;"><strong>Points for this game</strong></label>
                 <input type="number" id="game-points" min="1" value="1">
-
                 <button onclick="submitGame()">Add Game</button>
             </div>
-            
             <h3>Recent Games</h3>
             <div id="simple-history-container"></div>
         </div>
@@ -200,13 +161,10 @@
             <div class="card">
                 <canvas id="scoreChart" style="max-height: 400px;"></canvas>
             </div>
-            
             <h3>Detailed History</h3>
             <div class="card" style="overflow-x: auto;">
-                <table id="full-history-table">
-                    </table>
+                <table id="full-history-table"></table>
             </div>
-
             <h3>Player Statistics</h3>
             <div class="card">
                 <table id="stats-table">
@@ -218,73 +176,33 @@
 
         <div id="tab3" class="tab-content">
             <h3>Doppelkopf Cheatsheet</h3>
-            
             <h4>Card Ranking (Highest to Lowest)</h4>
             <div class="cheatsheet-grid">
                 <div class="card">
                     <div class="card-title">Trump Cards Hierarchy</div>
                     <div class="card-content">
                         <ol style="margin-top:0; padding-left: 1.5rem;">
-                            <li>♥️ 10 (Dullen)</li>
-                            <li>♣️ Q (Alte)</li>
-                            <li>♠️ Q (Alte)</li>
-                            <li>♥️ Q (Alte)</li>
-                            <li>♦️ Q (Alte)</li>
-                            <li>♣️ J (Karlchen)</li>
-                            <li>♠️ J</li>
-                            <li>♥️ J</li>
-                            <li>♦️ J</li>
-                            <li>♦️ A (Fuchs)</li>
-                            <li>♦️ 10</li>
-                            <li>♦️ K</li>
+                            <li>♥️ 10 (Dullen)</li><li>♣️ Q (Alte)</li><li>♠️ Q (Alte)</li><li>♥️ Q (Alte)</li><li>♦️ Q (Alte)</li>
+                            <li>♣️ J (Karlchen)</li><li>♠️ J</li><li>♥️ J</li><li>♦️ J</li>
+                            <li>♦️ A (Fuchs)</li><li>♦️ 10</li><li>♦️ K</li>
                         </ol>
-                        <i>Special Rule: If both ♥️10s are played in the same trick, the second one played wins (unless it's the last trick).</i>
+                        <i>Special Rule: If both ♥️10s are played in the same trick, the second one played wins.</i>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-title">Non-Trump Suit Ranking</div>
-                    <div class="card-content">
-                        For any non-trump suit (♣️, ♠️, ♥️):
-                        <ol style="margin-top:0; padding-left: 1.5rem;">
-                            <li>Ace (A)</li>
-                            <li>Ten (10)</li>
-                            <li>King (K)</li>
-                        </ol>
-                        <br><i>If two identical cards are played, the first one wins.</i>
-                    </div>
+                    <div class="card-content">For any non-trump suit (♣️, ♠️, ♥️):<ol style="margin-top:0; padding-left: 1.5rem;"><li>Ace (A)</li><li>Ten (10)</li><li>King (K)</li></ol></div>
                 </div>
             </div>
-
-            <h4>Reservation Priority and Bonus Points</h4>
+            <h4>Rules</h4>
             <div class="cheatsheet-grid">
                 <div class="card">
-                    <div class="card-title">Determining What is Played</div>
-                    <div class="card-content">
-                        If one or more players announce a reservation, the priority is:
-                        <ol style="margin-top:0; padding-left: 1.5rem;">
-                            <li><b>Misdeal / Throwing In (highest priority):</b> A player can declare a misdeal before the first card is played if they have:
-                                <ul>
-                                    <li>Less than 3 trump cards</li>
-                                    <li>5 or more Kings</li>
-                                    <li>7 or more Aces/Tens (Volle)</li>
-                                    <li>All personal trumps are lower than the Jack of Diamonds</li>
-                                </ul>
-                            </li>
-                            <li><b>Hochzeit (Wedding):</b> Outranks any Solo.</li>
-                            <li><b>Solo</b></li>
-                        </ol>
-                    </div>
+                    <div class="card-title">Priority</div>
+                    <div class="card-content"><ol style="margin-top:0; padding-left: 1.5rem;"><li><b>Misdeal</b></li><li><b>Hochzeit (Wedding)</b></li><li><b>Solo</b></li></ol></div>
                 </div>
                 <div class="card">
                     <div class="card-title">Bonus Points</div>
-                    <div class="card-content">
-                        There are bonus points to win under these conditions:
-                        <ol style="margin-top:0; padding-left: 1.5rem;">
-                            <li>Get the opponents ♦️ A (Fuchs) in your trick</li>
-                            <li>Get four 10s or As in your trick (four "Volle")</li>
-                            <li>Get the last trick with ♣️ J (Karlchen)</li>
-                        </ol>
-                    </div>
+                    <div class="card-content"><ol style="margin-top:0; padding-left: 1.5rem;"><li>Catch ♦️ A (Fuchs)</li><li>Four "Volle" (10/A)</li><li>Last trick with ♣️ J (Charlie)</li></ol></div>
                 </div>
             </div>
         </div>
@@ -294,47 +212,69 @@
 <div id="toast" class="toast">Game Added! 🎉</div>
 
 <script>
-    // --- State Management ---
     let state = {
         players: [],
-        scores: {}, // { "Alice": [0, 5, -2], "Bob": [0, -5, 2]... }
-        history: [], // Array of game objects
+        scores: {},
+        history: [],
         dealerIndex: 3
     };
-
     let chartInstance = null;
 
     // --- Initialization ---
     function init() {
-        // Try to load from localStorage
-        const saved = localStorage.getItem('doko_state');
-        if (saved) {
-            try {
+        try {
+            const saved = localStorage.getItem('doko_state');
+            if (saved) {
                 const parsed = JSON.parse(saved);
-                if (parsed.players && parsed.players.length === 4) {
+                // Basic validation to ensure old data format doesn't crash us
+                if (parsed.players && parsed.players.length === 4 && parsed.scores) {
                     state = parsed;
                     showGameScreen();
                     updateUI();
                 }
-            } catch (e) { console.error("Save data corrupted", e); }
+            }
+        } catch (e) {
+            console.warn("Could not load saved state (might be corrupted or blocked):", e);
+            // Optionally clear bad data
+            localStorage.removeItem('doko_state');
+        }
+    }
+
+    function clearData() {
+        if(confirm("Clear all local data?")) {
+            localStorage.removeItem('doko_state');
+            location.reload();
         }
     }
 
     function startGame() {
-        const p1 = document.getElementById('p1-name').value || "Player 1";
-        const p2 = document.getElementById('p2-name').value || "Player 2";
-        const p3 = document.getElementById('p3-name').value || "Player 3";
-        const p4 = document.getElementById('p4-name').value || "Player 4";
-        
-        state.players = [p1, p2, p3, p4];
-        state.scores = {};
-        state.players.forEach(p => state.scores[p] = [0]); // Start at 0
-        state.history = [];
-        state.dealerIndex = 3;
+        try {
+            const p1 = document.getElementById('p1-name').value.trim() || "Player 1";
+            const p2 = document.getElementById('p2-name').value.trim() || "Player 2";
+            const p3 = document.getElementById('p3-name').value.trim() || "Player 3";
+            const p4 = document.getElementById('p4-name').value.trim() || "Player 4";
+            
+            // Prevent duplicate names which causes logic errors
+            const names = [p1, p2, p3, p4];
+            const uniqueNames = new Set(names);
+            if(uniqueNames.size !== 4) {
+                alert("Please ensure all player names are unique.");
+                return;
+            }
 
-        saveState();
-        showGameScreen();
-        updateUI();
+            state.players = names;
+            state.scores = {};
+            state.players.forEach(p => state.scores[p] = [0]);
+            state.history = [];
+            state.dealerIndex = 3;
+
+            saveState();
+            showGameScreen();
+            updateUI();
+        } catch (e) {
+            alert("Error starting game: " + e.message);
+            console.error(e);
+        }
     }
 
     function resetGame() {
@@ -351,7 +291,6 @@
     }
 
     function populateInputs() {
-        // Solo Dropdown
         const soloSelect = document.getElementById('solo-player');
         soloSelect.innerHTML = '<option value="" disabled selected>Select player...</option>';
         state.players.forEach(p => {
@@ -361,7 +300,6 @@
             soloSelect.appendChild(opt);
         });
 
-        // Winner Checkboxes
         const winnerDiv = document.getElementById('winner-checkboxes');
         winnerDiv.innerHTML = '';
         state.players.forEach((p, idx) => {
@@ -375,13 +313,13 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         
-        // Find button that triggered this
+        // Manual mapping to ensure safety
+        const btnIdx = tabId === 'tab1' ? 0 : tabId === 'tab2' ? 1 : 2;
         const buttons = document.querySelectorAll('.tab-btn');
-        if(tabId === 'tab1') buttons[0].classList.add('active');
-        if(tabId === 'tab2') buttons[1].classList.add('active');
-        if(tabId === 'tab3') buttons[2].classList.add('active');
+        if(buttons[btnIdx]) buttons[btnIdx].classList.add('active');
 
-        document.getElementById(tabId).classList.add('active');
+        const tab = document.getElementById(tabId);
+        if(tab) tab.classList.add('active');
         
         if (tabId === 'tab2') {
             updateChart();
@@ -402,90 +340,75 @@
 
     // --- Game Logic ---
     function submitGame() {
-        const points = parseInt(document.getElementById('game-points').value) || 0;
-        const isSolo = document.getElementById('is-solo').checked;
-        
-        let winners = [];
-        let type = "Normal";
+        try {
+            const points = parseInt(document.getElementById('game-points').value) || 0;
+            const isSolo = document.getElementById('is-solo').checked;
+            
+            let winners = [];
+            let type = "Normal";
 
-        if (isSolo) {
-            const soloist = document.getElementById('solo-player').value;
-            if (!soloist) return alert("Please select the soloist.");
-            winners = [soloist];
-            type = "Solo";
-        } else {
-            // Get checked boxes
-            state.players.forEach((p, idx) => {
-                if (document.getElementById(`win-chk-${idx}`).checked) winners.push(p);
-            });
-            if (winners.length !== 2) return alert("For a normal game, please select exactly 2 winners.");
-        }
+            if (isSolo) {
+                const soloist = document.getElementById('solo-player').value;
+                if (!soloist) return alert("Please select the soloist.");
+                winners = [soloist];
+                type = "Solo";
+            } else {
+                state.players.forEach((p, idx) => {
+                    const chk = document.getElementById(`win-chk-${idx}`);
+                    if (chk && chk.checked) winners.push(p);
+                });
+                if (winners.length !== 2) return alert("For a normal game, please select exactly 2 winners.");
+            }
 
-        // Calculation
-        const gameImpact = {};
-        
-        if (isSolo) {
-            // Soloist gets +3 * points, others get -points
-            const soloist = winners[0];
+            const gameImpact = {};
+            if (isSolo) {
+                const soloist = winners[0];
+                state.players.forEach(p => {
+                    gameImpact[p] = (p === soloist) ? (points * 3) : (-points);
+                });
+            } else {
+                state.players.forEach(p => {
+                    gameImpact[p] = winners.includes(p) ? points : -points;
+                });
+            }
+
             state.players.forEach(p => {
-                if (p === soloist) {
-                    gameImpact[p] = points * 3;
-                } else {
-                    gameImpact[p] = -points;
-                }
+                const currentScores = state.scores[p];
+                const lastScore = currentScores[currentScores.length - 1];
+                currentScores.push(lastScore + gameImpact[p]);
             });
-        } else {
-            // Normal: Winners get +points, Losers get -points
-            state.players.forEach(p => {
-                if (winners.includes(p)) {
-                    gameImpact[p] = points;
-                } else {
-                    gameImpact[p] = -points;
-                }
+
+            if (!isSolo) state.dealerIndex = (state.dealerIndex + 1) % 4;
+
+            const currentTotals = {};
+            state.players.forEach(p => currentTotals[p] = state.scores[p][state.scores[p].length - 1]);
+
+            state.history.push({
+                id: state.history.length + 1,
+                type: type,
+                winners: winners,
+                points: points,
+                totals: currentTotals
             });
+
+            saveState();
+            updateUI();
+            showToast();
+            
+            document.getElementById('game-points').value = 1;
+            document.querySelectorAll('#winner-checkboxes input').forEach(c => c.checked = false);
+            document.getElementById('solo-player').value = "";
+        } catch(e) {
+            alert("Error submitting game: " + e.message);
         }
-
-        // Update Cumulative Scores
-        state.players.forEach(p => {
-            const currentScores = state.scores[p];
-            const lastScore = currentScores[currentScores.length - 1];
-            currentScores.push(lastScore + gameImpact[p]);
-        });
-
-        // Dealer rotation
-        if (!isSolo) {
-            state.dealerIndex = (state.dealerIndex + 1) % 4;
-        }
-
-        // Record History
-        const gameNum = state.history.length + 1;
-        
-        // Snapshot of totals AFTER this game
-        const currentTotals = {};
-        state.players.forEach(p => {
-            currentTotals[p] = state.scores[p][state.scores[p].length - 1];
-        });
-
-        state.history.push({
-            id: gameNum,
-            type: type,
-            winners: winners,
-            points: points,
-            totals: currentTotals // Save snapshot for table
-        });
-
-        saveState();
-        updateUI();
-        showToast();
-        
-        // Reset Inputs
-        document.getElementById('game-points').value = 1;
-        document.querySelectorAll('#winner-checkboxes input').forEach(c => c.checked = false);
-        document.getElementById('solo-player').value = "";
     }
 
     function saveState() {
-        localStorage.setItem('doko_state', JSON.stringify(state));
+        try {
+            localStorage.setItem('doko_state', JSON.stringify(state));
+        } catch (e) {
+            console.log("LocalStorage not available or full (Private Mode?)");
+        }
     }
 
     function showToast() {
@@ -494,12 +417,129 @@
         setTimeout(() => { t.className = t.className.replace("show", ""); }, 3000);
     }
 
-    // --- UI Updates ---
     function updateUI() {
-        // 1. Update Metrics (Current Standing)
         const metricsContainer = document.getElementById('metrics-container');
+        if(!metricsContainer) return;
         metricsContainer.innerHTML = '';
         
-        // Sort players by current score for the podium display
         const sortedPlayers = [...state.players].sort((a,b) => {
-            const scoreA = state.
+            const sA = state.scores[a] ? state.scores[a][state.scores[a].length-1] : 0;
+            const sB = state.scores[b] ? state.scores[b][state.scores[b].length-1] : 0;
+            return sB - sA;
+        });
+
+        const dealerName = state.players[state.dealerIndex];
+
+        sortedPlayers.forEach(p => {
+            const score = state.scores[p][state.scores[p].length - 1];
+            metricsContainer.innerHTML += `
+                <div class="metric-card">
+                    <div class="metric-label">${p === dealerName ? '🃏 Dealer' : 'Player'}</div>
+                    <div class="metric-label" style="font-weight:bold; color:#333;">${p}</div>
+                    <div class="metric-value">${score}</div>
+                </div>`;
+        });
+
+        updateStats();
+        updateSimpleHistory();
+        
+        if(document.getElementById('tab2').classList.contains('active')) {
+            updateChart();
+            renderFullHistory();
+        }
+    }
+
+    function updateSimpleHistory() {
+        const container = document.getElementById('simple-history-container');
+        if (state.history.length === 0) {
+            container.innerHTML = '<p style="color:#888;">No games yet.</p>';
+            return;
+        }
+        const recent = state.history.slice(-5).reverse();
+        let html = '<table><thead><tr><th>#</th><th>Type</th><th>Winners</th><th>Pts</th></tr></thead><tbody>';
+        recent.forEach(g => {
+            html += `<tr><td>${g.id}</td><td>${g.type}</td><td>${g.winners.join(', ')}</td><td>${g.points}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    }
+
+    function renderFullHistory() {
+        const table = document.getElementById('full-history-table');
+        if (state.history.length === 0) {
+            table.innerHTML = '<tr><td>No games recorded yet</td></tr>';
+            return;
+        }
+        let thead = '<thead><tr><th>Game</th><th>Type</th>';
+        state.players.forEach(p => thead += `<th>${p}</th>`);
+        thead += '<th>Points</th><th>Winners</th></tr></thead>';
+        let tbody = '<tbody>';
+        state.history.forEach(g => {
+            tbody += `<tr><td>${g.id}</td><td>${g.type}</td>`;
+            state.players.forEach(p => tbody += `<td>${g.totals[p]}</td>`);
+            tbody += `<td>${g.points}</td><td>${g.winners.join(', ')}</td></tr>`;
+        });
+        tbody += '</tbody>';
+        table.innerHTML = thead + tbody;
+    }
+
+    function updateStats() {
+        const tbody = document.querySelector('#stats-table tbody');
+        if(!tbody) return;
+        tbody.innerHTML = '';
+        state.players.forEach(p => {
+            let won = 0, solosPlayed = 0, solosWon = 0;
+            state.history.forEach(h => {
+                if (h.winners.includes(p)) {
+                    won++;
+                    if (h.type === 'Solo') solosWon++;
+                }
+                if (h.type === 'Solo' && h.winners.includes(p)) solosPlayed++;
+            });
+            let rate = state.history.length ? ((won/state.history.length)*100).toFixed(1) : 0;
+            tbody.innerHTML += `<tr><td>${p}</td><td>${won}</td><td>${rate}%</td><td>${solosWon}</td><td>${solosPlayed}</td></tr>`;
+        });
+    }
+
+    function updateChart() {
+        const ctx = document.getElementById('scoreChart');
+        if(!ctx) return;
+        // Check if Chart.js loaded
+        if (typeof Chart === 'undefined') {
+            // Fails silently if internet is blocked, but prevents crash
+            return;
+        }
+
+        const datasets = state.players.map((p, i) => {
+            const colors = ['#007BFF', '#28a745', '#ffc107', '#dc3545'];
+            return {
+                label: p,
+                data: state.scores[p], 
+                borderColor: colors[i % 4],
+                backgroundColor: 'transparent',
+                tension: 0.1,
+                borderWidth: 2,
+                pointRadius: 2
+            };
+        });
+        const labels = state.scores[state.players[0]].map((_, i) => i === 0 ? 'Start' : `Game ${i}`);
+        
+        if (chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx.getContext('2d'), {
+            type: 'line',
+            data: { labels: labels, datasets: datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                scales: { x: { grid: { color: '#e0e0e0' } }, y: { grid: { color: '#e0e0e0' } } },
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+    }
+
+    // Try to run init, but don't break if it fails
+    window.onload = init;
+</script>
+</body>
+</html>
