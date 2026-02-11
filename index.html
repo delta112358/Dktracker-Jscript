@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,13 +23,12 @@
         }
         .container { width: 100%; max-width: 1000px; }
         
-        /* Inputs & Generic Buttons */
+        /* Inputs & Buttons */
         input, select {
             width: 100%; padding: 0.5rem; border: 1px solid var(--border-color);
             border-radius: 0.5rem; background-color: var(--bg-color); color: var(--text-color);
             margin-bottom: 1rem; box-sizing: border-box; font-size: 1rem;
         }
-        
         button {
             width: 100%; background-color: var(--primary); color: white; border: none;
             padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer;
@@ -62,7 +62,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Cards */
+        /* Cards & Metrics */
         .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
         .metric-card {
             background: var(--card-bg); padding: 1rem; border-radius: 0.5rem;
@@ -172,7 +172,7 @@
             </div>
         </div>
 
-        <!-- Tab 3: Cheatsheet (Updated Content) -->
+        <!-- Tab 3: Cheatsheet -->
         <div id="tab3" class="tab-content">
             <h3>Doppelkopf Cheatsheet</h3>
             
@@ -254,23 +254,34 @@
     let chartInstance = null;
     let currentSelection = [];
 
+    // --- Core Functions ---
     function startGame() {
-        const p1 = document.getElementById('p1-name').value || "Player 1";
-        const p2 = document.getElementById('p2-name').value || "Player 2";
-        const p3 = document.getElementById('p3-name').value || "Player 3";
-        const p4 = document.getElementById('p4-name').value || "Player 4";
-        state.players = [p1, p2, p3, p4];
-        state.players.forEach(p => state.scores[p] = [0]);
-        state.history = [];
-        
-        document.getElementById('setup-screen').classList.add('hidden');
-        document.getElementById('game-screen').classList.remove('hidden');
-        populateInputs();
-        updateUI();
+        try {
+            const p1 = document.getElementById('p1-name').value || "Player 1";
+            const p2 = document.getElementById('p2-name').value || "Player 2";
+            const p3 = document.getElementById('p3-name').value || "Player 3";
+            const p4 = document.getElementById('p4-name').value || "Player 4";
+            
+            state.players = [p1, p2, p3, p4];
+            state.players.forEach(p => state.scores[p] = [0]);
+            state.history = [];
+            
+            // Switch Screens
+            document.getElementById('setup-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            
+            populateInputs();
+            updateUI();
+        } catch (e) {
+            alert("Error starting game: " + e.message + ". Please try refreshing the page.");
+            console.error(e);
+        }
     }
 
     function populateInputs() {
         const grid = document.getElementById('player-grid');
+        if (!grid) throw new Error("DOM Element 'player-grid' not found. HTML mismatch.");
+        
         grid.innerHTML = '';
         state.players.forEach(p => {
             const btn = document.createElement('button');
@@ -292,15 +303,10 @@
         } else {
             // Normal Game: Toggle logic with Max 2 (FIFO)
             if (currentSelection.includes(player)) {
-                // If already selected, deselect
                 currentSelection = currentSelection.filter(p => p !== player);
             } else {
-                // Select new player
                 currentSelection.push(player);
-                // If we now have 3, remove the first one selected (FIFO)
-                if (currentSelection.length > 2) {
-                    currentSelection.shift();
-                }
+                if (currentSelection.length > 2) currentSelection.shift();
             }
         }
         updateSelectionUI();
@@ -308,8 +314,12 @@
 
     function updateSelectionUI() {
         const isSolo = document.getElementById('is-solo').checked;
-        document.getElementById('selection-label').innerText = isSolo ? "Select Soloist" : "Select Winners (Re Party)";
-        document.getElementById('selection-hint').innerText = isSolo ? "(Select 1)" : "(Select 2)";
+        const label = document.getElementById('selection-label');
+        const hint = document.getElementById('selection-hint');
+        
+        if(label) label.innerText = isSolo ? "Select Soloist" : "Select Winners (Re Party)";
+        if(hint) hint.innerText = isSolo ? "(Select 1)" : "(Select 2)";
+        
         document.querySelectorAll('.select-btn').forEach(btn => {
             btn.classList.toggle('selected', currentSelection.includes(btn.dataset.player));
         });
@@ -321,56 +331,63 @@
     }
 
     function submitGame() {
-        const points = parseInt(document.getElementById('game-points').value) || 0;
-        const isSolo = document.getElementById('is-solo').checked;
-        const winners = currentSelection;
-        let type = "Normal";
+        try {
+            const points = parseInt(document.getElementById('game-points').value) || 0;
+            const isSolo = document.getElementById('is-solo').checked;
+            const winners = currentSelection;
+            let type = "Normal";
 
-        if (isSolo && winners.length !== 1) return alert("Select exactly 1 soloist.");
-        if (!isSolo && winners.length !== 2) return alert("Select exactly 2 winners.");
-        if (isSolo) type = "Solo";
+            if (isSolo && winners.length !== 1) return alert("Select exactly 1 soloist.");
+            if (!isSolo && winners.length !== 2) return alert("Select exactly 2 winners.");
+            if (isSolo) type = "Solo";
 
-        const gameImpact = {};
-        if (isSolo) {
-            state.players.forEach(p => gameImpact[p] = (p === winners[0]) ? points * 3 : -points);
-        } else {
-            state.players.forEach(p => gameImpact[p] = winners.includes(p) ? points : -points);
+            const gameImpact = {};
+            if (isSolo) {
+                state.players.forEach(p => gameImpact[p] = (p === winners[0]) ? points * 3 : -points);
+            } else {
+                state.players.forEach(p => gameImpact[p] = winners.includes(p) ? points : -points);
+            }
+
+            const currentTotals = {};
+            state.players.forEach(p => {
+                const newVal = state.scores[p].at(-1) + gameImpact[p];
+                state.scores[p].push(newVal);
+                currentTotals[p] = newVal;
+            });
+
+            state.history.push({
+                id: state.history.length + 1,
+                type: type,
+                winners: winners,
+                points: points,
+                totals: currentTotals
+            });
+
+            if (!isSolo) state.dealerIndex = (state.dealerIndex + 1) % 4;
+
+            updateUI();
+            document.getElementById('game-points').value = 1;
+            currentSelection = [];
+            updateSelectionUI();
+        } catch (e) {
+            alert("Error submitting game: " + e.message);
         }
-
-        const currentTotals = {};
-        state.players.forEach(p => {
-            const newVal = state.scores[p].at(-1) + gameImpact[p];
-            state.scores[p].push(newVal);
-            currentTotals[p] = newVal;
-        });
-
-        state.history.push({
-            id: state.history.length + 1,
-            type: type,
-            winners: winners,
-            points: points,
-            totals: currentTotals
-        });
-
-        if (!isSolo) state.dealerIndex = (state.dealerIndex + 1) % 4;
-
-        updateUI();
-        document.getElementById('game-points').value = 1;
-        currentSelection = [];
-        updateSelectionUI();
     }
 
     function updateUI() {
         const container = document.getElementById('metrics-container');
+        if (!container) return;
+        
         container.innerHTML = '';
-        // No sorting, keep original order
+        // Removed sorting - original order
         state.players.forEach(p => {
             const isDealer = (p === state.players[state.dealerIndex]);
+            const currentScore = state.scores[p] ? state.scores[p].at(-1) : 0;
             container.innerHTML += `
                 <div class="metric-card">
                     <div style="font-size:0.9rem; color:#666;">${isDealer ? '🃏 Dealer' : 'Player'}</div>
                     <div>${p}</div>
-                    <div class="metric-value">${state.scores[p].at(-1)}</div>
+                    <div class="metric-value">${currentScore}</div>
                 </div>`;
         });
         
@@ -383,13 +400,13 @@
 
     function renderHistory() {
         const container = document.getElementById('round-history-container');
+        if (!container) return;
         container.innerHTML = '';
         if (state.history.length === 0) {
             container.innerHTML = '<p style="color:#777">No games yet.</p>';
             return;
         }
 
-        // Logic: Split into Rounds (4 Normal Games = 1 Round)
         let rounds = [];
         let currentRound = [];
         let normalCount = 0;
@@ -397,7 +414,6 @@
         state.history.forEach(game => {
             currentRound.push(game);
             if (game.type === 'Normal') normalCount++;
-            
             if (normalCount === 4) {
                 rounds.push(currentRound);
                 currentRound = [];
@@ -406,17 +422,12 @@
         });
         if (currentRound.length > 0) rounds.push(currentRound);
 
-        // Render Tables
         rounds.forEach((roundGames, index) => {
             const roundNum = index + 1;
             let html = `<div class="round-container"><div class="round-title">Round ${roundNum}</div><table>`;
-            
-            // Header
             html += `<thead><tr><th>#</th>`;
             state.players.forEach(p => html += `<th>${p}</th>`);
             html += `<th class="points-col">Pts</th></tr></thead><tbody>`;
-
-            // Rows
             roundGames.forEach(g => {
                 html += `<tr><td>${g.id}</td>`;
                 state.players.forEach(p => html += `<td>${g.totals[p]}</td>`);
@@ -429,6 +440,7 @@
 
     function renderStats() {
         const tbody = document.querySelector('#stats-table tbody');
+        if (!tbody) return;
         tbody.innerHTML = '';
         state.players.forEach(p => {
             let won = 0, solos = 0;
@@ -454,6 +466,9 @@
 
     function renderChart() {
         const ctx = document.getElementById('scoreChart');
+        if (!ctx) return;
+        if (typeof Chart === 'undefined') return; // Safety check if CDN fails
+        
         if (chartInstance) chartInstance.destroy();
         const datasets = state.players.map((p, i) => ({
             label: p, data: state.scores[p],
@@ -462,4 +477,14 @@
         }));
         chartInstance = new Chart(ctx, {
             type: 'line',
-            data: { labels: state.scores[state
+            data: { labels: state.scores[state.players[0]].map((_, i) => i), datasets: datasets },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    }
+    
+    function resetGame() { location.reload(); }
+</script>
+</body>
+</html>
+
+
